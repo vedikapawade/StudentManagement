@@ -14,40 +14,43 @@ public class StudentService {
     @Autowired
     private StudentRepository repository;
 
-    // Add Student
-    public Student saveStudent(Student student) {
-        return repository.save(student);
-    }
-
-    // Get All Students
     public List<Student> getAllStudents() {
         return repository.findAll();
     }
 
-    // Get Student By Id
-    public Student getStudentById(int id) {
-        return repository.findById(id).orElse(null);
+    public Student getStudentById(Integer id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
     }
 
-    // Update Student
-    public Student updateStudent(int id, Student student) {
-        Student existingStudent = repository.findById(id).orElse(null);
+    public Student saveStudent(Student student) {
 
-        if (existingStudent != null) {
-            existingStudent.setName(student.getName());
-            existingStudent.setAge(student.getAge());
-            existingStudent.setCourse(student.getCourse());
-            existingStudent.setCity(student.getCity());
-
-            return repository.save(existingStudent);
+        if (student == null) {
+            throw new RuntimeException("Student cannot be null");
         }
 
-        return null;
+        return repository.save(student);
     }
 
-    // Delete Student
-    public String deleteStudent(int id) {
+    public Student updateStudent(Integer id, Student student) {
+
+        Student existingStudent = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+
+        existingStudent.setName(student.getName());
+        existingStudent.setAge(student.getAge());
+        existingStudent.setCourse(student.getCourse());
+        existingStudent.setCity(student.getCity());
+
+        return repository.save(existingStudent);
+    }
+
+    public void deleteStudent(Integer id) {
+
+        if (!repository.existsById(id)) {
+            throw new RuntimeException("Student not found");
+        }
+
         repository.deleteById(id);
-        return "Student Deleted Successfully";
     }
 }

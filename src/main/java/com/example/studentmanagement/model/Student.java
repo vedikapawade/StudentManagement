@@ -1,10 +1,9 @@
 package com.example.studentmanagement.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "students")
@@ -14,19 +13,22 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank(message = "Name cannot be empty")
     private String name;
 
+    @NotNull(message = "Age is required")
+    @Min(value = 18, message = "Age must be at least 18")
     private Integer age;
 
+    @NotBlank(message = "Course cannot be empty")
     private String course;
 
+    @NotBlank(message = "City cannot be empty")
     private String city;
 
-    // Default Constructor
     public Student() {
     }
 
-    // Parameterized Constructor
     public Student(Integer id, String name, Integer age, String course, String city) {
         this.id = id;
         this.name = name;
@@ -35,7 +37,6 @@ public class Student {
         this.city = city;
     }
 
-    // Getter and Setter for id
     public Integer getId() {
         return id;
     }
@@ -44,7 +45,6 @@ public class Student {
         this.id = id;
     }
 
-    // Getter and Setter for name
     public String getName() {
         return name;
     }
@@ -53,7 +53,6 @@ public class Student {
         this.name = name;
     }
 
-    // Getter and Setter for age
     public Integer getAge() {
         return age;
     }
@@ -62,7 +61,6 @@ public class Student {
         this.age = age;
     }
 
-    // Getter and Setter for course
     public String getCourse() {
         return course;
     }
@@ -71,23 +69,11 @@ public class Student {
         this.course = course;
     }
 
-    // Getter and Setter for city
     public String getCity() {
         return city;
     }
 
     public void setCity(String city) {
         this.city = city;
-    }
-
-    @Override
-    public String toString() {
-        return "Student{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", course='" + course + '\'' +
-                ", city='" + city + '\'' +
-                '}';
     }
 }
